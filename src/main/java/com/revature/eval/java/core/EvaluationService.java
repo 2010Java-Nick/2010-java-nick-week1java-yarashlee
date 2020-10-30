@@ -1,8 +1,15 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EvaluationService {
 
@@ -15,7 +22,7 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
-		for (int i = reversed.length - 1, j=0; i >= 0; i--, j++) {
+		for (int i = reversed.length - 1, j = 0; i >= 0; i--, j++) {
 			reversed[j] = string.charAt(i);
 		}
 		return new String(reversed);
@@ -30,8 +37,21 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		char letter;
+
+		String acronym = "";
+
+		for (int i = 0; i < phrase.length(); i++) {
+			letter = phrase.charAt(i);
+			if (i == 0) {
+				acronym += Character.toUpperCase(phrase.charAt(i));
+			}
+			if (letter == ' ' || letter == '-') {
+				acronym += Character.toUpperCase(phrase.charAt(i + 1));
+
+			}
+		}
+		return acronym;
 	}
 
 	/**
@@ -84,18 +104,27 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo && sideTwo == sideThree && sideOne == sideThree) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo || sideTwo == sideThree || sideOne == sideThree) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne != sideTwo && sideTwo != sideThree && sideOne != sideThree) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 	}
@@ -116,8 +145,82 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int score = 0;
+
+		for (int i = 0; i < string.length(); i++) {
+			char letter = string.charAt(i);
+
+			switch (letter) {
+			case 'A':
+			case 'a':
+			case 'E':
+			case 'e':
+			case 'I':
+			case 'i':
+			case 'O':
+			case 'o':
+			case 'U':
+			case 'u':
+			case 'L':
+			case 'l':
+			case 'N':
+			case 'n':
+			case 'R':
+			case 'r':
+			case 'S':
+			case 's':
+			case 'T':
+			case 't':
+				score += 1;
+				break;
+			case 'D':
+			case 'd':
+			case 'G':
+			case 'g':
+				score += 2;
+				break;
+			case 'B':
+			case 'b':
+			case 'C':
+			case 'c':
+			case 'M':
+			case 'm':
+			case 'P':
+			case 'p':
+				score += 3;
+				break;
+			case 'F':
+			case 'f':
+			case 'H':
+			case 'h':
+			case 'V':
+			case 'v':
+			case 'W':
+			case 'w':
+			case 'Y':
+			case 'y':
+				score += 4;
+				break;
+			case 'K':
+			case 'k':
+				score += 5;
+				break;
+			case 'J':
+			case 'j':
+			case 'X':
+			case 'x':
+				score += 8;
+				break;
+			case 'Q':
+			case 'q':
+			case 'Z':
+			case 'z':
+				score += 10;
+				break;
+			}
+		}
+		// return all the points added up from the strings
+		return score;
 	}
 
 	/**
@@ -152,8 +255,19 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		string = string.replace(" ", "").replace(".", "").replace(",", "").replace("(", "").replace(")", "").replace("-", "")
+				.replace("_", "").replace("[", "").replace("]", "");
+
+		if (string.length() > 11) {
+			throw new IllegalArgumentException("Phone number cannot have more than 11 digits.");
+		} else if (string.contains("!") || string.contains("@") || string.contains("#") || string.contains("$")
+				|| string.contains("%") || string.contains("^") || string.contains("&") || string.contains("*")
+				|| string.contains("-") || string.contains(":") || string.contains(".") || string.contains(",")
+				|| string.contains("N") || string.contains("X")) {
+			throw new IllegalArgumentException("Phone number cannot contain non numeric values.");
+		} else {
+			return string;
+		}
 	}
 
 	/**
@@ -166,8 +280,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String[] word = string.split(" ");
+
+		HashMap<String, Integer> wordCount = new HashMap<String, Integer>();
+
+		int count = 1;
+		for (int x = 0; x < word.length; x++) {
+			for (int w = x + 1; w < word.length; w++) {
+				if (word[x].equals(word[w])) {
+					count++;
+				}
+			}
+			wordCount.put(word[x], count);
+		}
+		return wordCount;
 	}
 
 	/**
@@ -209,7 +335,16 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
+//			int length = this.sortedList.size();
+//			int center = (length+1)/2;
+//			
+//			if(t.equals(this.sortedList.get(center))) {
+//				return center;
+//			}
+//			
+			//while(length <= center) {
+			
+			//}
 			return 0;
 		}
 
@@ -246,9 +381,30 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String temp = "";
+		String returnString = "";
+		int i = 0;
+		
+		if(string.toUpperCase().startsWith("A") || string.toUpperCase().startsWith("E") || string.toUpperCase().startsWith("I") 
+				|| string.toUpperCase().startsWith("O") || string.toUpperCase().startsWith("U")) {
+				return string += "ay";
+		}
+		else {
+			while (!(string.toUpperCase().charAt(i) == 'A') && !(string.toUpperCase().charAt(i) == 'E') && 
+					!(string.toUpperCase().charAt(i) == 'I') && !(string.toUpperCase().charAt(i) == 'O') 
+					&& !(string.toUpperCase().charAt(i) == 'U')) {
+				temp += string.charAt(i);
+				i++;
+			}
+			while (i<string.length()) {
+				returnString += string.charAt(i);
+				i++;
+			}
+			returnString += temp;
+			return returnString += "ay";
+		}
 	}
+
 
 	/**
 	 * 9. An Armstrong number is a number that is the sum of its own digits each
@@ -266,8 +422,17 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		int  pwr = 0;
+		for (int i = input; i != 0; i /= 10) {
+			pwr++;
+		}
+
+		int sum = 0;
+		for (int i = input; i != 0; i /= 10) {
+			sum += Math.pow(i % 10, pwr);
+		}
+
+		return (sum == input);
 	}
 
 	/**
@@ -281,8 +446,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		long num = 2;
+
+		List<Long> primeList = new ArrayList<>();
+
+		while (l != 1) {
+			if (l % num == 0 && (num % 2 != 0 || num == 2)) {
+
+				boolean prime = true;
+
+				for (int n = 2; n <= (num / 2); n++) {
+
+					if (num % n == 0)
+						prime = false;
+				}
+
+				if (prime)
+					primeList.add(num);
+				l = l / num;
+				num = 1;
+			}
+
+			num++;
+		}
+
+		return primeList;
 	}
 
 	/**
@@ -339,8 +527,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int number = 0;
+		int count = 0;
+		int n;
+
+		if (i <= 0) {
+			throw new IllegalArgumentException("Zero or negative numbers are not Nth Prime numbers.");
+		}
+		while (count < i) {
+			number += 1;
+			for (n = 2; n <= number; n++) {
+				if (number % n == 0) {
+					break;
+				}
+			}
+			if (n == number) {
+				count += 1;
+			}
+		}
+		return number;
+
 	}
 
 	/**
@@ -376,8 +582,117 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+			String encode = "";
+			
+			string = string.replaceAll(" ", "");			
+			char[] charArr = string.toCharArray();
+			
+			for(char c : charArr) {
+				
+				switch (c) {
+					case 'a':
+					case 'A': encode = encode.concat("z");
+						continue;	
+					case 'b':
+					case 'B': encode = encode.concat("y");
+						continue;
+					case 'c':
+					case 'C': encode = encode.concat("x");
+						continue;
+					case 'd': 
+					case 'D': encode = encode.concat("w");
+						continue;
+					case 'e': 
+					case 'E': encode = encode.concat("v");
+						continue;						
+					case 'f': 
+					case 'F': encode = encode.concat("u");
+						continue;
+					case 'g': 
+					case 'G': encode = encode.concat("t");												
+						continue;
+					case 'h': 
+					case 'H': encode = encode.concat("s");
+						continue;	
+					case 'i': 
+					case 'I': encode = encode.concat("r");
+						continue;
+					case 'j': 
+					case 'J': encode = encode.concat("q");
+						continue;					
+					case 'k': 	
+					case 'K': encode = encode.concat("p");
+						continue;						
+					case 'l': 
+					case 'L': encode = encode.concat("o");
+						continue;					
+					case 'm': 
+					case 'M': encode = encode.concat("n");
+						continue;					
+					case 'n': 
+					case 'N': encode = encode.concat("m");
+						continue;								
+					case 'o': 
+					case 'O': encode = encode.concat("l");
+						continue;		
+					case 'p': 
+					case 'P': encode = encode.concat("k");
+						continue;	
+					case 'q': 
+					case 'Q': encode = encode.concat("j");
+						continue;
+					case 'r':
+					case 'R': encode = encode.concat("i");
+						continue;	
+					case 's': 
+					case 'S': encode = encode.concat("h");
+						continue;
+					case 't': 
+					case 'T': encode = encode.concat("g");
+						continue;
+					case 'u': 
+					case 'U': encode = encode.concat("f");
+						continue;
+					case 'v': 
+					case 'V': encode = encode.concat("e");
+						continue;			
+					case 'w': 
+					case 'W': encode = encode.concat("d");
+						continue;
+					case 'x': 
+					case 'X': encode = encode.concat("c");
+						continue;
+					case 'y': 
+					case 'Y': encode = encode.concat("b");
+						continue;
+					case 'z': 
+					case 'Z': encode = encode.concat("a");
+						continue;
+					case '0': encode = encode.concat("0");
+						continue;
+					case '1': encode = encode.concat("1");
+						continue;
+					case '2': encode = encode.concat("2");
+						continue;
+					case '3': encode = encode.concat("3");
+						continue;
+					case '4': encode = encode.concat("4");
+						continue;
+					case '5': encode = encode.concat("5");
+						continue;
+					case '6': encode = encode.concat("6");
+						continue;
+					case '7': encode = encode.concat("7");
+						continue;
+					case '8': encode = encode.concat("8");
+						continue;
+					case '9': encode = encode.concat("9");
+				}
+				
+			}
+			
+			return encode;
 		}
 
 		/**
@@ -387,8 +702,113 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+			String decode = "";	
+			char[] charArr = string.toCharArray();
+			
+			for(char d : charArr) {
+				
+				switch (d) {
+					case 'a':
+					case 'A': decode = decode.concat("z");
+						continue;	
+					case 'b':
+					case 'B': decode = decode.concat("y");
+						continue;
+					case 'c':
+					case 'C': decode = decode.concat("x");
+						continue;
+					case 'd': 
+					case 'D': decode = decode.concat("w");
+						continue;
+					case 'e': 
+					case 'E': decode = decode.concat("v");
+						continue;						
+					case 'f': 
+					case 'F': decode = decode.concat("u");
+						continue;
+					case 'g': 
+					case 'G': decode = decode.concat("t");												
+						continue;
+					case 'h': 
+					case 'H': decode = decode.concat("s");
+						continue;	
+					case 'i': 
+					case 'I': decode = decode.concat("r");
+						continue;
+					case 'j': 
+					case 'J': decode = decode.concat("q");
+						continue;					
+					case 'k': 	
+					case 'K': decode = decode.concat("p");
+						continue;						
+					case 'l': 
+					case 'L': decode = decode.concat("o");
+						continue;					
+					case 'm': 
+					case 'M': decode = decode.concat("n");
+						continue;					
+					case 'n': 
+					case 'N': decode = decode.concat("m");
+						continue;								
+					case 'o': 
+					case 'O': decode = decode.concat("l");
+						continue;		
+					case 'p': 
+					case 'P': decode = decode.concat("k");
+						continue;	
+					case 'q': 
+					case 'Q': decode = decode.concat("j");
+						continue;
+					case 'r':
+					case 'R': decode = decode.concat("i");
+						continue;	
+					case 's': 
+					case 'S': decode = decode.concat("h");
+						continue;
+					case 't': 
+					case 'T': decode = decode.concat("g");
+						continue;
+					case 'u': 
+					case 'U': decode = decode.concat("f");
+						continue;
+					case 'v': 
+					case 'V': decode = decode.concat("e");
+						continue;			
+					case 'w': 
+					case 'W': decode = decode.concat("d");
+						continue;
+					case 'x': 
+					case 'X': decode = decode.concat("c");
+						continue;
+					case 'y': 
+					case 'Y': decode = decode.concat("b");
+						continue;
+					case 'z': 
+					case 'Z': decode = decode.concat("a");
+						continue;
+					case '0': decode = decode.concat("0");
+						continue;
+					case '1': decode = decode.concat("1");
+						continue;
+					case '2': decode = decode.concat("2");
+						continue;
+					case '3': decode = decode.concat("3");
+						continue;
+					case '4': decode = decode.concat("4");
+						continue;
+					case '5': decode = decode.concat("5");
+						continue;
+					case '6': decode = decode.concat("6");
+						continue;
+					case '7': decode = decode.concat("7");
+						continue;
+					case '8': decode = decode.concat("8");
+						continue;
+					case '9': decode = decode.concat("9");
+				}
+			}		
+			return decode;
 		}
 	}
 
@@ -415,8 +835,66 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		int sum = 0;
+		int mult = 10;
+
+		for (int i = 0; i < string.length(); i++) {
+			switch (string.charAt(i)) {
+			case '0':
+				sum += (0 * mult);
+				mult -= 1;
+				break;
+			case '1':
+				sum += (1 * mult);
+				mult -= 1;
+				break;
+			case '2':
+				sum += (2 * mult);
+				mult -= 1;
+				break;
+			case '3':
+				sum += (3 * mult);
+				mult -= 1;
+				break;
+			case '4':
+				sum += (4 * mult);
+				mult -= 1;
+				break;
+			case '5':
+				sum += (5 * mult);
+				mult -= 1;
+				break;
+			case '6':
+				sum += (6 * mult);
+				mult -= 1;
+				break;
+			case '7':
+				sum += (7 * mult);
+				mult -= 1;
+				break;
+			case '8':
+				sum += (8 * mult);
+				mult -= 1;
+				break;
+			case '9':
+				sum += (9 * mult);
+				mult -= 1;
+				break;
+			case 'X':
+				sum += (10 * mult);
+				mult -= 1;
+				break;
+			case '-':
+				break;
+			default:
+				// Invalid Input
+				break;
+			}
+		}
+		if (sum % 11 == 0) {
+			return true;
+		} else
+			return false;
 	}
 
 	/**
@@ -433,9 +911,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
-	}
+		int letters = 26; 
+		
+        if(string.length() < letters){
+           return false;
+        }
+        for(char a = 'A'; a <= 'Z' ; a++){
+            if((string.indexOf(a) < 0) && (string.indexOf((char)(a + 32)) < 0)){
+               return false;
+            }
+        }
+        return true;
+    }
+
 
 	/**
 	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
@@ -446,8 +934,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		if(given instanceof LocalDateTime) { 
+			return ((LocalDateTime) given).plusSeconds(1000000000);
+		} else {
+			LocalDate localDate = (LocalDate) given;
+			LocalDateTime localDateTime = LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), 0, 0, 0);
+			return (Temporal) localDateTime.plusSeconds(1000000000);
+		}
 	}
 
 	/**
@@ -464,9 +957,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+		int sum = 0;
+		
+		Set<Integer> setMultiples = new HashSet<Integer>();
+			
+			for (int m: set)
+				for (int k = 1; k*m < i; k++)
+					setMultiples.add(k*m);
+			
+			for (Integer c: setMultiples)
+				sum +=c;
+			
+			return sum;
+
+		}
 
 	/**
 	 * 19. Given a number determine whether or not it is valid per the Luhn formula.
@@ -505,7 +1009,32 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
+		if (!string.replaceAll("\\s+", "").matches("[0-9]+"))
+			return false;
+
+		int LVal = 0;
+
+		char[] chars = string.replaceAll("[\\s+]", "").toCharArray();
+		int count = chars.length - 2;
+
+		for (int i = chars.length - 1; i >= 0; i--) {
+
+			if (i == count) {
+
+				if ((Character.getNumericValue(chars[i]) * 2) > 9) {
+					LVal += ((Character.getNumericValue(chars[i]) * 2) - 9);
+				} else {
+					LVal += (Character.getNumericValue(chars[i]) * 2);
+				}
+
+				count -= 2;
+			} else {
+				LVal += Character.getNumericValue(chars[i]);
+			}
+		}
+		if (LVal % 10 == 0)
+			return true;
+
 		return false;
 	}
 
@@ -537,8 +1066,25 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
+		string = string.replace("What is ", "").replace("?", "").replaceAll("^[a-zA-Z]+\\s[a-zA-Z]+\\s", "").replaceAll("by\\s", "");
+		String[] strArr = string.split("\\s");
+		String operations = strArr[1];
+
+		int one = Integer.parseInt(strArr[0]);
+		int two = Integer.parseInt(strArr[2]);
+		
+		
+		switch(operations) {
+		case "plus":
+			return one + two;
+		case "minus":
+			return one - two;
+		case "multiplied":
+			return one * two;
+		case "divided":
+			return one / two;
+		}
+		
 		return 0;
 	}
-
 }
