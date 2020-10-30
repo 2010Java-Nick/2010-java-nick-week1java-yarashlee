@@ -335,17 +335,23 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-//			int length = this.sortedList.size();
-//			int center = (length+1)/2;
-//			
-//			if(t.equals(this.sortedList.get(center))) {
-//				return center;
-//			}
-//			
-			//while(length <= center) {
-			
-			//}
-			return 0;
+			int leftSide = 0;
+			int rightSide = sortedList.size() - 1;
+			int index = sortedList.size() - 1;
+
+			while (leftSide <= rightSide) {
+				int midpoint = (leftSide + rightSide) / 2;
+				if (t.equals(sortedList.get(midpoint))) {
+					index = sortedList.indexOf(t);
+					break;
+				}
+				if (sortedList.indexOf(t) < midpoint) {
+					rightSide = midpoint - 1;
+				} else if (sortedList.indexOf(t) > midpoint) {
+					leftSide = midpoint + 1;
+				}
+			}
+			return index;
 		}
 
 		public BinarySearch(List<T> sortedList) {
